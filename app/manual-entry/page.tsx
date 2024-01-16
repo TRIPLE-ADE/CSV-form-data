@@ -61,7 +61,6 @@ export default function Page() {
                 onChange={(e) =>
                   handleFieldChange(index, field.key, e.target.value)
                 }
-                c
               />
             </div>
           ))}
