@@ -21,6 +21,7 @@ export default function Page() {
   const [formFields, setFormFields] = useState<FormField[]>([
     initialFormFields,
   ]);
+  const [formData, setFormData] = useState<string | undefined>(undefined);
 
   const handleAddField = (e: MouseEvent<HTMLButtonElement>) => {
     const addNewFields = [...formFields, initialFormFields];
@@ -33,7 +34,10 @@ export default function Page() {
     setFormFields(newFormFields);
   };
 
-  console.log(JSON.stringify(formFields, null, 2));
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setFormData(JSON.stringify(formFields, null, 2))
+  }
   return (
     <main className="flex min-h-screen flex-col items-stretch gap-5 p-5 md:p-24 bg-slate-50 text-teal-900">
       <section className="max-w-2xl w-full mx-auto">
@@ -136,7 +140,23 @@ export default function Page() {
           >
             Add Field
           </button>
+          <button
+            onClick={handleSubmit}
+            type="submit"
+            className="bg-teal-900 w-full mt-4 text-center rounded-[10px] px-3 py-2 text-sm font-bold text-white"
+          >
+            Submit
+          </button>
         </form>
+      </section>
+      <section>
+        {
+          formData && (
+            <div>
+              {formData}
+            </div>
+          )
+        }
       </section>
     </main>
   );
