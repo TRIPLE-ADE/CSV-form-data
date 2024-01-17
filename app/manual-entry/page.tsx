@@ -1,5 +1,6 @@
 "use client";
 import React, { MouseEvent, useEffect, useState } from "react";
+import Papa from 'papaparse'
 
 interface FormField {
   Name: string;
@@ -36,7 +37,26 @@ export default function Page() {
 
   const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFormData(JSON.stringify(formFields, null, 2))
+    // setFormData(JSON.stringify(formFields, null, 2))
+    // setFormData(formFields)
+    const toCSV = Papa.unparse(formFields)
+
+    const blob = new Blob([toCSV] , { type: 'text/csv'})
+
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url;
+    a.download = 'formData.csv';
+
+    document.body.appendChild(a);
+  a.click();
+
+  // Remove the anchor from the body
+  document.body.removeChild(a);
+
+  // Revoke the URL to free up resources
+  URL.revokeObjectURL(url);
+     
   }
   return (
     <main className="flex min-h-screen flex-col items-stretch gap-5 p-5 md:p-24 bg-slate-50 text-teal-900">
@@ -145,7 +165,7 @@ export default function Page() {
             type="submit"
             className="bg-teal-900 w-full mt-4 text-center rounded-[10px] px-3 py-2 text-sm font-bold text-white"
           >
-            Submit
+            Save now
           </button>
         </form>
       </section>
